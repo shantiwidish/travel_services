@@ -8,9 +8,8 @@ Dummy API'S for Travel Kere projects
 Features
 *******************
 
-1. Agents (id, name, address, phone, email)
-2. Destinations (id, name, province, city, location, quota, accommodation , prices, agentID)
-3. Scheduled Trips (id, destinationId, departure_date, coordinatorName, coordinatorPhone, qouta_remaining, member{name|phone})
+2. Destinations (id, name, province, city, location, quota, accommodation , prices)
+3. Scheduled Trips (id, destinationId, departure_date, coordinatorName, coordinatorPhone, qouta_remaining, member{name|phone,})
 
 
 *******************
