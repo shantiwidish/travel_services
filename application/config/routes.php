@@ -64,5 +64,5 @@ $route['api/agents/(:num)'] = 'api/agents/index/id/$1'; // Example 4
 $route['api/agents/(:num)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/agents/index/id/$1/format/$3$4'; // Example 8
 $route['api/destinations/(:num)'] = 'api/destination/index/id/$1'; // Example 4
 $route['api/destinations/(:num)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/agents/index/id/$1/format/$3$4'; // Example 8
-$route['api/agents/(:num)'] = 'api/agents/index/id/$1'; // Example 4
-$route['api/agents/(:num)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/agents/index/id/$1/format/$3$4'; // Example 8
+$route['api/schedules/(:num)'] = 'api/schedules/index/id/$1'; // Example 4
+$route['api/schedules/(:num)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/schedules/index/id/$1/format/$3$4'; // Example 8

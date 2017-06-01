@@ -17,7 +17,7 @@ require APPPATH . '/libraries/REST_Controller.php';
  * @license         MIT
  * @link            https://github.com/chriskacerguis/codeigniter-restserver
  */
-class ScheduleTrips extends REST_Controller {
+class Schedules extends REST_Controller {
 
     function __construct()
     {
