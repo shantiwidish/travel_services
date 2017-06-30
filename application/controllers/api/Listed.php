@@ -105,7 +105,8 @@ class Listed extends REST_Controller {
             'end_date' => $this->post('end_date'),
             'quantity' => $this->post('quantity')
         ];
-        $result = $this->listed->get_by_column(array("destination_id", "start_date"), $message);
+        $result = $this->listed->get_by_keys(array("destination_id", "start_date"), $message);
+        
         if(sizeof($result)>0){
           $message['quantity'] += $result[0]->quantity;
           $this->listed->update_data($result[0]->id,$message);
