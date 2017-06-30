@@ -58,7 +58,11 @@ $route['translate_uri_dashes'] = TRUE;
 | Sample REST API Routes
 | -------------------------------------------------------------------------
 */
-$route['api/destinations/(:num)'] = 'api/destination/index/id/$1'; // Example 4
-$route['api/destinations/(:num)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/agents/index/id/$1/format/$3$4'; // Example 8
-$route['api/schedules/(:num)'] = 'api/schedules/index/id/$1'; // Example 4
-$route['api/schedules/(:num)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/schedules/index/id/$1/format/$3$4'; // Example 8
+$route['api/destinations/(:num)'] = 'api/destinations/index/id/$1'; // Example 4
+$route['api/destinations/search/(:any)'] = 'api/destinations/index/search/$1'; // Example 4
+$route['api/destinations/(:num)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/destinations/index/id/$1/format/$3$4'; // Example 8
+$route['api/locations/(:num)'] = 'api/locations/index/id/$1'; // Example 4
+$route['api/locations/search/(:any)'] = 'api/locations/index/search/$1'; // Example 4
+$route['api/locations/(:num)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/locations/index/id/$1/format/$3$4'; // Example 8
+$route['api/listed/(:num)'] = 'api/listed/index/id/$1'; // Example 4
+$route['api/listed/(:num)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/listed/index/id/$1/format/$3$4'; // Example 8

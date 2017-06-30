@@ -1,7 +1,7 @@
 <?php
 
-class Destination_model extends MY_Model {
-  private $table = "destinations";
+class Location_model extends MY_Model {
+  private $table = "locations";
 
   function __construct()
   {

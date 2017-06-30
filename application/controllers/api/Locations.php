@@ -17,7 +17,7 @@ require APPPATH . '/libraries/REST_Controller.php';
  * @license         MIT
  * @link            https://github.com/chriskacerguis/codeigniter-restserver
  */
-class Destinations extends REST_Controller {
+class Locations extends REST_Controller {
 
     function __construct()
     {
@@ -35,7 +35,7 @@ class Destinations extends REST_Controller {
 
     public function index_get()
     {
-      $this->load->model('destination_model', 'destination');
+      $this->load->model('location_model', 'location');
 
         $id = $this->get('id');
 
@@ -46,35 +46,30 @@ class Destinations extends REST_Controller {
           $search_key = $this->get('search');
           if ($search_key === NULL)
           {
-            $destinations = $this->destination->get_all();
+            $locations = $this->location->get_all();
           }else{
             $search_key = urldecode($search_key);
             $search_value = array(
-              'area' => $search_key
+              'city' => $search_key,
+              'province' => $search_key
             );
-            $this->load->model('location_model', 'location');
-            $locations = $this->location->get_by_column(array("area"), $search_value);
-            if(sizeof($locations)>0){
-              $search_value = array(
-                'location_id' => $locations[0]->id
-              );
-              $destinations = $this->destination->get_by_column(array("location_id"), $search_value);
-            }
+            $locations = $this->location->get_by_column(array("city","province"), $search_value);
           }
-            // Check if the users data store contains users (in case the database result returns NULL)
-            if ($destinations)
-            {
-                // Set the response and exit
-                $this->response($destinations, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
-            }
-            else
-            {
-                // Set the response and exit
-                $this->response([
-                    'status' => FALSE,
-                    'message' => 'No destination were found'
-                ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
-            }
+
+          // Check if the users data store contains users (in case the database result returns NULL)
+          if ($locations)
+          {
+              // Set the response and exit
+              $this->response($locations, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+          }
+          else
+          {
+              // Set the response and exit
+              $this->response([
+                  'status' => FALSE,
+                  'message' => 'No location were found'
+              ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
+          }
         }
 
         // Find and return a single record for a particular user.
@@ -91,10 +86,10 @@ class Destinations extends REST_Controller {
         // Get the user from the array, using the id as key for retrieval.
         // Usually a model is to be used for this.
 
-        $destination =  $this->destination->get_by_id($id);
-        if (!empty($destination))
+        $location =  $this->location->get_by_id($id);
+        if (!empty($location))
         {
-            $this->set_response($destination, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+            $this->set_response($location, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
         }
         else
         {

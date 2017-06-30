@@ -17,7 +17,7 @@ require APPPATH . '/libraries/REST_Controller.php';
  * @license         MIT
  * @link            https://github.com/chriskacerguis/codeigniter-restserver
  */
-class Destinations extends REST_Controller {
+class Listed extends REST_Controller {
 
     function __construct()
     {
@@ -35,7 +35,7 @@ class Destinations extends REST_Controller {
 
     public function index_get()
     {
-      $this->load->model('destination_model', 'destination');
+      $this->load->model('listedtrip_model', 'listed');
 
         $id = $this->get('id');
 
@@ -43,38 +43,22 @@ class Destinations extends REST_Controller {
 
         if ($id === NULL)
         {
-          $search_key = $this->get('search');
-          if ($search_key === NULL)
+          $listeds = $this->listed->get_all();
+
+          // Check if the users data store contains users (in case the database result returns NULL)
+          if ($listeds)
           {
-            $destinations = $this->destination->get_all();
-          }else{
-            $search_key = urldecode($search_key);
-            $search_value = array(
-              'area' => $search_key
-            );
-            $this->load->model('location_model', 'location');
-            $locations = $this->location->get_by_column(array("area"), $search_value);
-            if(sizeof($locations)>0){
-              $search_value = array(
-                'location_id' => $locations[0]->id
-              );
-              $destinations = $this->destination->get_by_column(array("location_id"), $search_value);
-            }
+              // Set the response and exit
+              $this->response($listeds, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
           }
-            // Check if the users data store contains users (in case the database result returns NULL)
-            if ($destinations)
-            {
-                // Set the response and exit
-                $this->response($destinations, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
-            }
-            else
-            {
-                // Set the response and exit
-                $this->response([
-                    'status' => FALSE,
-                    'message' => 'No destination were found'
-                ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
-            }
+          else
+          {
+              // Set the response and exit
+              $this->response([
+                  'status' => FALSE,
+                  'message' => 'No list were found'
+              ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
+          }
         }
 
         // Find and return a single record for a particular user.
@@ -91,10 +75,10 @@ class Destinations extends REST_Controller {
         // Get the user from the array, using the id as key for retrieval.
         // Usually a model is to be used for this.
 
-        $destination =  $this->destination->get_by_id($id);
-        if (!empty($destination))
+        $listed =  $this->listed->get_by_id($id);
+        if (!empty($listed))
         {
-            $this->set_response($destination, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+            $this->set_response($listed, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
         }
         else
         {
@@ -103,6 +87,33 @@ class Destinations extends REST_Controller {
                 'message' => 'Destination could not be found'
             ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
         }
+    }
+
+    public function index_post()
+    {
+      $this->load->model('listedtrip_model', 'listed');
+      $destinationId = $this->post('destination_id');
+      // Validate the id.
+      if ($destinationId <= 0)
+      {
+          // Set the response and exit
+          $this->response(NULL, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
+      }
+        $message = [
+            'destination_id' => $this->post('destination_id'),
+            'start_date' => $this->post('start_date'),
+            'end_date' => $this->post('end_date'),
+            'quantity' => $this->post('quantity')
+        ];
+        $result = $this->listed->get_by_column(array("destination_id", "start_date"), $message);
+        if(sizeof($result)>0){
+          $message['quantity'] += $result[0]->quantity;
+          $this->listed->update_data($result[0]->id,$message);
+        }else{
+          $this->listed->add_data($message);
+        }
+
+        $this->set_response("Added a resource", REST_Controller::HTTP_CREATED); // CREATED (201) being the HTTP response code
     }
 
 }
